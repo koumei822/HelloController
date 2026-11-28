@@ -1,13 +1,17 @@
 package org.example;
-import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 @RestController
 public class Main {
+
+    private final Map<String, Integer> users = new HashMap<>();
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -15,8 +19,18 @@ public class Main {
 
     @GetMapping("/")
     public String hello() {
-        return StringUtils.upperCase("Hello Spring Boot!");
+        return "Hello Spring Boot!";
+    }
+
+    @PostMapping("/users")
+    public String addUser(@RequestParam String name,
+                          @RequestParam int age) {
+        users.put(name, age);
+        return "登録しました: " + name + " " + age + "歳";
+    }
+
+    @GetMapping("/users")
+    public Map<String, Integer> getUsers() {
+        return users;
     }
 }
-
-
